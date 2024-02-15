@@ -1,8 +1,9 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react'
-import { Alert, StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
+import { Alert, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import { Stack } from 'expo-router'
 import { supabase } from '../lib/supabase'
-import styles from './styles'; 
+import styles from './styles'
 
 export default function AuthPage () {
   const [email, setEmail] = useState('')
@@ -35,7 +36,7 @@ export default function AuthPage () {
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: 'Supabase Expo Router App' }} />
       <View>
-        <Text style={[styles.text, styles.topText, {fontSize: 24}, {color: '#30529c'}]}>Sign In</Text>
+        <Text style={[styles.text, styles.topText, { fontSize: 24 }, { color: '#30529c' }]}>Sign In</Text>
         <Text style={styles.text}>Already registered? Log in here.</Text>
       </View>
 
@@ -66,12 +67,12 @@ export default function AuthPage () {
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         {<TouchableOpacity
-            style={[styles.buttonContainer, styles.buttonText, {width: 375}]}
+            style={[styles.buttonContainer, styles.buttonText, { width: 375 }]}
             disabled={loading}
             onPress={signInWithEmail}>
             <Text style={styles.buttonText}>Log In</Text>
           </TouchableOpacity>
-        
+
         /* <Button
           disabled={loading}
           title='Sign In'
@@ -86,7 +87,7 @@ export default function AuthPage () {
 
       <View style={styles.verticallySpaced}>
         { <TouchableOpacity
-            style={[styles.buttonContainer, styles.buttonText, {width: 300}]}
+            style={[styles.buttonContainer, styles.buttonText, { width: 300 }]}
             disabled={loading}
             onPress={signUpWithEmail}>
             <Text style={styles.buttonText}>Sign Up</Text>
