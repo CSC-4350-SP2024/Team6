@@ -1,7 +1,9 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react'
-import { Alert, StyleSheet, TextInput, View, Button } from 'react-native'
+import { Alert, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import { Stack } from 'expo-router'
 import { supabase } from '../lib/supabase'
+import styles from './styles'
 
 export default function AuthPage () {
   const [email, setEmail] = useState('')
@@ -33,7 +35,13 @@ export default function AuthPage () {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: 'Supabase Expo Router App' }} />
+      <View>
+        <Text style={[styles.text, styles.topText, { fontSize: 24 }, { color: '#30529c' }]}>Sign In</Text>
+        <Text style={styles.text}>Already registered? Log in here.</Text>
+      </View>
+
       <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Text style={styles.text}>U S E R N A M E</Text>
         <TextInput
           style={styles.textInput}
           label="Email"
@@ -43,7 +51,9 @@ export default function AuthPage () {
           autoCapitalize={'none'}
         />
       </View>
+
       <View style={styles.verticallySpaced}>
+        <Text style={styles.text}>P A S S W O R D</Text>
         <TextInput
           style={styles.textInput}
           label="Password"
@@ -54,60 +64,43 @@ export default function AuthPage () {
           autoCapitalize={'none'}
         />
       </View>
+
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
+        {<TouchableOpacity
+            style={[styles.buttonContainer, styles.buttonText, { width: 375 }]}
+            disabled={loading}
+            onPress={signInWithEmail}>
+            <Text style={styles.buttonText}>Log In</Text>
+          </TouchableOpacity>
+
+        /* <Button
           disabled={loading}
           title='Sign In'
           onPress={() => signInWithEmail()}
-          style={styles.buttonContainer}
-        />
+          buttonStyle={styles.buttonContainer}
+        /> */
+        }
+
       </View>
+
+      <Text style={styles.text}>{'\n'}Don't have an account?</Text>
+
       <View style={styles.verticallySpaced}>
-        <Button
+        { <TouchableOpacity
+            style={[styles.buttonContainer, styles.buttonText, { width: 300 }]}
+            disabled={loading}
+            onPress={signUpWithEmail}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+
+        /* <Button
           disabled={loading}
           title='SignUp'
           onPress={() => signUpWithEmail()}
-          style={styles.buttonContainer}
-        />
-
+          buttonStyle={[styles.buttonContainer, styles.buttonText]}
+        /> */
+        }
       </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 40,
-    padding: 12
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: 'stretch'
-  },
-  mt20: {
-    marginTop: 20
-  },
-  buttonContainer: {
-    backgroundColor: '#000968',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    margin: 8
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    textTransform: 'uppercase'
-  },
-  textInput: {
-    borderColor: '#000968',
-    borderRadius: 4,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    padding: 12,
-    margin: 8
-  }
-})
