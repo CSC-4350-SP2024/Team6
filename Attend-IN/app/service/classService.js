@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 
 // Replace 'YOUR_SUPABASE_URL' and 'YOUR_SUPABASE_KEY' with your Supabase project URL and key
 
-export default async function getUserClasses (userId) {
+async function getUserClasses (userId) {
   try {
     // Replace 'public' with your database name and 'classes' with your table name
     const { data, error } = await supabase.rpc('getallclasses', { userid: userId })
@@ -19,3 +19,5 @@ export default async function getUserClasses (userId) {
     throw error;
   }
 }
+
+export { getUserClasses }

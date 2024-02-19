@@ -1,6 +1,6 @@
 /* eslint-disable semi */
 class Class {
-  constructor (sectionId, crn, userId, isTeacher, name, startClassTimes, endClassTimes, classLocation) {
+  constructor (sectionId, crn, userId, isTeacher, name, startClassTimes, endClassTimes, classLat, classLong) {
     this.sectionId = sectionId;
     this.crn = crn;
     this.userId = userId;
@@ -8,8 +8,9 @@ class Class {
     this.name = name;
     this.startClassTimes = startClassTimes;
     this.endClassTimes = endClassTimes;
-    this.classLocation = classLocation;
+    this.classLat = classLat;
+    this.classLong = classLong;
   }
 }
 
-module.exports = Class
+export { Class }
