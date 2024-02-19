@@ -2,7 +2,7 @@
 
 import { router } from 'expo-router'
 import { useEffect } from 'react'
-import { supabase } from './lib/supabase.js'
+import { supabase } from './lib/supabase'
 
 export default function IndexPage () {
   useEffect(() => {
