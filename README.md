@@ -50,3 +50,5 @@ VALUES
     ST_Point(-73.945826, 40.80629)
   );
 ```
+#### Wireframe Layout
+![image](https://github.com/CSC-4350-SP2024/Team6/assets/73751366/4913236d-f1cc-4f7e-bbc9-e03c0d84776e)
