@@ -20,20 +20,17 @@ async function getUserClasses (userId) {
   }
 }
 
-async function getUserData(setUserId) {
+async function getUserData (setUserId) {
   try {
     const { data, error } = await supabase.auth.getUser(); // Fetch user data
     if (error) {
-      throw error; 
+      throw error
     } else {
       setUserId(data.user.id); // Set the user ID in the state
     }
   } catch (error) {
-    console.error('Error fetching user data:', error.message); 
-
+    console.error('Error fetching user data:', error.message);
   }
 }
 
 export { getUserClasses, getUserData };
-
-

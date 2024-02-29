@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
-import { getUserData, getUserClasses } from '../../service/classService.js'; 
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react'
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native'
+import { getUserData, getUserClasses } from '../../service/classService.js'
 import styles from './classes_styling.js'
 
-function UserClasses() {
-  const [classes, setClasses] = useState([]);
-  const [userId, setUserId] = useState(null);
+function UserClasses () {
+  const [classes, setClasses] = useState([])
+  const [userId, setUserId] = useState(null)
 
   useEffect(() => {
-   getUserData(setUserId); // Call fetchUserData and pass setUserId to set the user ID
-  }, []);
+    getUserData(setUserId) // Call fetchUserData and pass setUserId to set the user ID
+  }, [])
 
   useEffect(() => {
     if (userId) {
-      async function fetchUserClasses() {  // Call fetchUserClasses and pass id to retrieve user classes
+      async function fetchUserClasses () { // Call fetchUserClasses and pass id to retrieve user classes
         try {
-          const userClasses = await getUserClasses(userId);
-          setClasses(userClasses);
+          const userClasses = await getUserClasses(userId)
+          setClasses(userClasses)
         } catch (error) {
-          console.error('Error fetching classes', error);
+          console.error('Error fetching classes', error)
         }
       }
-      fetchUserClasses();
+      fetchUserClasses()
     }
-  }, [userId]);
+  }, [userId])
 
   return (
     <View style={styles.container}>
@@ -39,7 +40,7 @@ function UserClasses() {
       ))}
     </View>
   </View>
-);
+  )
 }
 
-export default UserClasses;
+export default UserClasses
