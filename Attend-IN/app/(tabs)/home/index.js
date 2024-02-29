@@ -1,30 +1,45 @@
-import React from 'react'
-import { Stack, Link } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { getUserData, getUserClasses } from '../../service/classService.js'; 
+import styles from './classes_styling.js'
 
-export default function Index () {
+function UserClasses() {
+  const [classes, setClasses] = useState([]);
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+   getUserData(setUserId); // Call fetchUserData and pass setUserId to set the user ID
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      async function fetchUserClasses() {  // Call fetchUserClasses and pass id to retrieve user classes
+        try {
+          const userClasses = await getUserClasses(userId);
+          setClasses(userClasses);
+        } catch (error) {
+          console.error('Error fetching classes', error);
+        }
+      }
+      fetchUserClasses();
+    }
+  }, [userId]);
+
   return (
-        <>
-            <Stack.Screen options={{ headerShown: true, title: 'Home' }} />
-            <View style={styles.container}>
-                <Text>Index of Home Tab</Text>
-                <StatusBar style="auto" />
-
-                <Link href={'/home/details-page'}>
-                    <Text>Go to Detail Page</Text>
-                </Link>
-            </View>
-        </>
-
-  )
+    <View style={styles.container}>
+    <Text>User Classes</Text>
+    <View style={styles.classesContainer}>
+      {classes.map((classItem, index) => (
+        <View key={classItem.crn} style={styles.classItem}>
+          <Text>{classItem.classname}</Text>
+          {/* <Text>{classItem.sectionid}</Text> */}
+          <Text>{classItem.crn}</Text>
+          {/* <Text>{classItem.isteacher ? 'Is Teacher' : 'Not a Teacher'}</Text> */}
+        </View>
+      ))}
+    </View>
+  </View>
+);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
+export default UserClasses;
