@@ -9,14 +9,13 @@ async function getUserClasses (userId) {
     const { data, error } = await supabase.rpc('getallclasses', { userid: userId })
 
     if (error) {
-      console.log(error);
-      throw error;
+      console.error(error);
+      return { error: 'Failed to retrieve user classes' }
     }
-    console.log(data);
     return data;
   } catch (error) {
     console.error('Error fetching user classes:', error.message);
-    throw error;
+    return { error: 'Failed to retrieve user classes' }
   }
 }
 
@@ -36,13 +35,15 @@ async function getUserData (setUserId) {
 // call this function to sign a user in the dataabse
 async function signClassAttendance (userId, crn) {
   try {
-    // Replace 'public' with your database name and 'classes' with your table name
     const { data, error } = await supabase.rpc('signattendance', { userid: userId, crn1: crn })
-    if (error) console.error(error)
-    else console.log(data)
-    return data;
+    if (error) {
+      return { error: 'Failed to sign attendance' }
+    } else {
+      return data[0];
+    }
   } catch (error) {
     console.error('Error fetching user data:', error.message);
+    return { error: 'Failed to sign Attendance' }
   }
 }
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native'
-import { getUserData, getUserClasses, signClassAttendance } from '../../service/classService.js'
+import { getUserData, getUserClasses } from '../../service/classService.js'
 import styles from './classes_styling.js'
 
 function UserClasses () {
