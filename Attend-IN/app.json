@@ -12,6 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "fonts": {
+      "tinos": {
+        "regular": "./assets/fonts/Tinos-Regular.ttf",
+        "italic": "./assets/fonts/Tinos-Italic.ttf",
+        "bold": "./assets/fonts/Tinos-Bold.ttf",
+        "boldItalic": "./assets/fonts/Tinos-BoldItalic.ttf"
+      }
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
