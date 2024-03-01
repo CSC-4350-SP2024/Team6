@@ -1,9 +1,24 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
+    marginTop: 30,
     padding: 12
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    justifyContent: 'center'
+  },
+  logo: {
+    resizeMode: 'contain',
+    width: 300,
+    height: 300,
+    alignSelf: 'center'
   },
   verticallySpaced: {
     paddingTop: 4,
@@ -19,6 +34,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     margin: 8
+  },
+  landingButton: {
+    backgroundColor: '#30529c',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    width: 275,
+    alignSelf: 'center'
   },
   buttonText: {
     fontSize: 18,
@@ -40,14 +63,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9d9d9'
   },
   text: {
-    fontFamily: 'serif',
+    fontFamily: 'Tinos',
     textAlign: 'center'
   },
   topText: {
     paddingVertical: 3,
     paddingHorizontal: 12,
     margin: 8
+  },
+  title: {
+    color: '#FFFFFF',
+    fontFamily: 'Tinos',
+    fontWeight: 'normal',
+    fontSize: 60,
+    alignSelf: 'center',
+    marginTop: -100
   }
-})
+});
 
-export default styles
+export default styles;
