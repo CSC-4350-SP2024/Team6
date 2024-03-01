@@ -33,4 +33,17 @@ async function getUserData (setUserId) {
   }
 }
 
-export { getUserClasses, getUserData };
+// call this function to sign a user in the dataabse
+async function signClassAttendance (userId, crn) {
+  try {
+    // Replace 'public' with your database name and 'classes' with your table name
+    const { data, error } = await supabase.rpc('signattendance', { userid: userId, crn1: crn })
+    if (error) console.error(error)
+    else console.log(data)
+    return data;
+  } catch (error) {
+    console.error('Error fetching user data:', error.message);
+  }
+}
+
+export { getUserClasses, getUserData, signClassAttendance };
