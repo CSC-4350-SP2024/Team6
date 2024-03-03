@@ -47,4 +47,25 @@ async function signClassAttendance (userId, crn) {
   }
 }
 
-export { getUserClasses, getUserData, signClassAttendance };
+// formula to get meters between two geographical coordinates.
+function haversineDistanceFormula(userLong, userLat, classLong, classLat) {
+  
+  const R = 6371e3; // radius of the earth in meters
+  const lat1 = Math.toRadians(userLat);
+  const lon1 = Math.toRadians(userLong);
+  const lat2 = Math.toRadians(classLat);
+  const lon2 = Math.toRadians(classLong);
+  const diffLat = lat2 - lat1;
+  const diffLon = lon2 - lon1;
+
+  const sinLat = Math.sin(diffLat / 2) * Math.sin(diffLat / 2);
+  const cosLat = Math.cos(lat1) * Math.cos(lat2);
+  const sinLon = Math.sin(diffLon / 2) * Math.sin(diffLon / 2);
+  const firstPart = sinLat + cosLat * sinLon;
+  const distance = R * (2 * Math.atan2(Math.sqrt(firstPart), Math.sqrt(1 - firstPart)));
+
+  return distance;
+}
+
+
+export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula };
