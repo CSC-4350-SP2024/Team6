@@ -1,17 +1,16 @@
-/* eslint-disable camelcase */
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 
-const class_styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   classesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   classItem: {
     width: '48%',
@@ -20,8 +19,14 @@ const class_styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    margin: '1%'
-  }
-})
+    margin: '1%',
+    alignItems: 'center', // Center items horizontally within the class item container
+  },
+  image: {
+    width: 150, // Set the width of the image
+    height: 150, // Set the height of the image
+    resizeMode: 'contain', // Adjust the resizeMode as per your requirement
+  },
+});
 
-export default class_styles
+export default styles;
