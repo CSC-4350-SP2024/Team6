@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
-import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text, View, Alert, Image } from 'react-native'
 import { getUserData, getUserClasses } from '../../service/classService.js'
 import styles from './classes_styling.js'
 import * as Location from 'expo-location'
@@ -66,6 +66,11 @@ function UserClasses () {
       {classes.map((classItem, index) => (
         <View key={classItem.crn} style={styles.classItem}>
           <Text>{classItem.classname}</Text>
+          <Image
+              source={{ uri: classItem.imageurl }}
+              style={styles.image}
+              resizeMode="cover"
+            />
           {/* <Text>{classItem.sectionid}</Text> */}
           <Text>{classItem.crn}</Text>
           {/* <Text>{classItem.isteacher ? 'Is Teacher' : 'Not a Teacher'}</Text> */}
