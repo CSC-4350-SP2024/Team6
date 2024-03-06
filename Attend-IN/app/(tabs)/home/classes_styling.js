@@ -4,14 +4,17 @@ import { StyleSheet } from 'react-native'
 const class_styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  outerClassContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: 500
   },
   classesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   classItem: {
     width: '48%',
