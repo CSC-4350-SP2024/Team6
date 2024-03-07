@@ -1,5 +1,6 @@
 /* eslint-disable semi */
 import { supabase } from '../lib/supabase';
+import '../global'
 
 // Replace 'YOUR_SUPABASE_URL' and 'YOUR_SUPABASE_KEY' with your Supabase project URL and key
 
@@ -12,6 +13,9 @@ async function getUserClasses (userId) {
       console.error(error);
       return { error: 'Failed to retrieve user classes' }
     }
+    data.forEach(element => {
+      if (element.isteacher) global.isTeacher = true;
+    });
     return data;
   } catch (error) {
     console.error('Error fetching user classes:', error.message);
@@ -48,8 +52,7 @@ async function signClassAttendance (userId, crn) {
 }
 
 // formula to get meters between two geographical coordinates.
-function haversineDistanceFormula(userLong, userLat, classLong, classLat) {
-  
+function haversineDistanceFormula (userLong, userLat, classLong, classLat) {
   const R = 6371e3; // radius of the earth in meters
   const lat1 = Math.toRadians(userLat);
   const lon1 = Math.toRadians(userLong);
