@@ -7,7 +7,7 @@ import '../global'
 async function getUserClasses (userId) {
   try {
     // Replace 'public' with your database name and 'classes' with your table name
-    const { data, error } = await supabase.rpc('getallclasses', { userid: userId })
+    const { data, error } = await supabase.rpc('getallclasses', { userid: '17a8824e-cbe1-4a80-b875-11b72ad5d90d' })
 
     if (error) {
       console.error(error);
@@ -70,5 +70,80 @@ function haversineDistanceFormula (userLong, userLat, classLong, classLat) {
   return distance;
 }
 
+async function isWithinTenMinutesBeforeStartTimeOrEndTime (sectioncrn) {
+  return supabase.rpc('getclasstimedetails', { sectioncrn })
+    .then(response => {
+      const data = response.data[0];
+
+      // get the current day and timestamp
+      const currentDay = new Date().toLocaleString('en-US', { weekday: 'long' }).toUpperCase();
+      const currentTime = new Date();
+
+      // get the days and dates to test against
+      const testDays = data.days.map((element) => element.trim());
+      const startTimes = data.startclasstimes.map((element) => element.trim());
+      const endTimes = data.endclasstimes.map((element) => element.trim());
+
+      // start the testing
+      if (testDays.includes(currentDay)) {
+        for (const targetTime of startTimes) {
+          if (isDayOfTimestamp(targetTime, currentDay) && isCurrentTimeTenMinutesEarlierOfStartTime(targetTime, currentTime)) return true;
+        }
+        for (const targetTime of endTimes) {
+          if (isDayOfTimestamp(targetTime, currentDay) && isCurrentTimeTenMinutesLaterOfEndTime(targetTime, currentTime)) return true;
+        }
+      }
+      return false;
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+      return false
+    })
+}
+
+function isCurrentTimeTenMinutesEarlierOfStartTime (laterTime, earlierTime) {
+  laterTime = new Date(laterTime);
+  // Extract the hours and minutes from the given time and current time
+  const givenHours = laterTime.getHours();
+  const givenMinutes = laterTime.getMinutes();
+  const nowHours = earlierTime.getHours();
+  const nowMinutes = earlierTime.getMinutes();
+
+  // Calculate the absolute difference in minutes
+  const diffInMinutes = (givenHours - nowHours) * 60 + (givenMinutes - nowMinutes);
+
+  // Check if the difference is within 10 minutes
+  return diffInMinutes >= 0 && diffInMinutes <= 10;
+}
+
+function isCurrentTimeTenMinutesLaterOfEndTime (earlierTime, laterTime) {
+  earlierTime = new Date(earlierTime);
+  // Extract the hours and minutes from the given time and current time
+  const givenHours = earlierTime.getHours();
+  const givenMinutes = earlierTime.getMinutes();
+  const nowHours = laterTime.getHours();
+  const nowMinutes = laterTime.getMinutes();
+
+  // Calculate the absolute difference in minutes
+  const diffInMinutes = (nowHours - givenHours) * 60 + (nowMinutes - givenMinutes);
+
+  // Check if the difference is within 10 minutes
+  return diffInMinutes >= 0 && diffInMinutes <= 10;
+}
+
+function isDayOfTimestamp (timestamp, day) {
+  // Parse the timestamp string to a Date object
+  const date = new Date(timestamp);
+
+  // Get the day of the week as a number (0 for Sunday, 1 for Monday, etc.)
+  const dayOfWeek = date.getDay();
+
+  // Convert the number to the corresponding day name in uppercase
+  const dayNames = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+  const dayName = dayNames[dayOfWeek];
+
+  // Compare the day name with the given day name
+  return dayName === day;
+}
 
 export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula };
