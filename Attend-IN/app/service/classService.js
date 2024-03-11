@@ -97,8 +97,23 @@ async function isWithinTenMinutesBeforeStartTimeOrEndTime (sectioncrn) {
     })
     .catch(error => {
       console.error('Error fetching data:', error);
-      return false
+      return false;
     })
+}
+
+async function isAttendanceAlreadySigned (sectioncrn, myuserid, mydate) {
+  return supabase.rpc('checkifattendanceexists', {
+    mydate,
+    myuserid,
+    sectioncrn
+  })
+    .then((response) => {
+      return response.data ? response.data : false;
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+      return false;
+    });
 }
 
 function isCurrentTimeTenMinutesEarlierOfStartTime (laterTime, earlierTime) {
