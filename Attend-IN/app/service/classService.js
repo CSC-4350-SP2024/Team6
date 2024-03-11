@@ -7,7 +7,7 @@ import '../global'
 async function getUserClasses (userId) {
   try {
     // Replace 'public' with your database name and 'classes' with your table name
-    const { data, error } = await supabase.rpc('getallclasses', { userid: '17a8824e-cbe1-4a80-b875-11b72ad5d90d' })
+    const { data, error } = await supabase.rpc('getallclasses', { userid: userId })
 
     if (error) {
       console.error(error);
