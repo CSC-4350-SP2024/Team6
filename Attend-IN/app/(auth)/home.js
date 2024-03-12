@@ -14,7 +14,7 @@ export default function Page () {
 
   return (
     <View style={styles.imageContainer}>
-      <ImageBackground source={require('../../assets/GSU Campus.jpg')} style={styles.imageBackground}>
+      <ImageBackground source={{uri: 'https://www.gsu.edu/wp-content/uploads/2021/09/StateWayDowntown-1000.jpg'}} style={styles.imageBackground}>
         <View style={styles.container}>
           <Text style={styles.title}>Attend-In</Text>
           <Image source={require('../../assets/Panther Head Logo.png')} style={styles.logo}/>
