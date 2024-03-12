@@ -161,4 +161,40 @@ function isDayOfTimestamp (timestamp, day) {
   return dayName === day;
 }
 
+function semesterAttendanceSummary (sectioncrn) {
+  return supabase.rpc('attendanceoverallsummary', { sectioncrn })
+    .then((response) => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return { data: null, error: 'Error fetching data' };
+    })
+}
+
+function dayAttendanceSummary (classdate, sectioncrn) {
+  // check if date is valid i.e. classdate <= todaysDate & classdate >= firstDate of class
+  return supabase.rpc('attendancedaysummary', { classdate, sectioncrn })
+    .then((response) => {
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.error(error);
+      return { data: null, error: 'Error fetching data' };
+    })
+}
+
+function dateIntervalAttendanceSummary (enddate, sectioncrn, startdate) {
+  // check if dates are valid i.e. startdate <= todaysDate and startdate >= firstClassDate and enddate <= todaysDate and enddate >= firstClassDate
+  return supabase.rpc('attendanceintervalsummary', { enddate, sectioncrn, startdate })
+    .then((response) => {
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.error(error);
+      return { data: null, error: 'Error fetching data' };
+    })
+}
+
 export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula };
