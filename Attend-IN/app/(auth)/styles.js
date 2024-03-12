@@ -17,30 +17,32 @@ const styles = StyleSheet.create({
   logo: {
     resizeMode: 'contain',
     width: 300,
-    height: 300,
+    height: 280,
     alignSelf: 'center'
   },
   verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 6,
+    paddingBottom: 6,
     alignSelf: 'stretch'
   },
   mt20: {
-    marginTop: 20
+    marginTop: 30,
+    marginBottom: 30
   },
   buttonContainer: {
     backgroundColor: '#30529c',
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    margin: 8
+    margin: 8,
+    width: 200
   },
   landingButton: {
     backgroundColor: '#30529c',
     borderRadius: 5,
     paddingVertical: 10,
-    paddingHorizontal: 12,
-    width: 275,
+    paddingHorizontal: 15,
+    width: 200,
     alignSelf: 'center'
   },
   buttonText: {
@@ -49,7 +51,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     alignSelf: 'center',
-    textTransform: 'uppercase',
     padding: 3
   },
   textInput: {
@@ -58,16 +59,18 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     padding: 12,
-    margin: 8,
+    margin: 15,
     textAlign: 'center',
-    backgroundColor: '#d9d9d9'
+    backgroundColor: '#d9d9d9',
+    width: 300, 
+    alignSelf: 'center'
   },
   text: {
     fontFamily: 'Tinos',
     textAlign: 'center'
   },
   topText: {
-    paddingVertical: 3,
+    paddingVertical: 6,
     paddingHorizontal: 12,
     margin: 8
   },

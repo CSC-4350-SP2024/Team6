@@ -12,10 +12,10 @@ export default function IndexPage () {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         router.replace('/(tabs)/home/')
-        console.log(global.isTeacher)
-        if (global.isTeacher) {
-          console.log('put additional logic here')
-        }
+        // console.log(global.isTeacher)
+        // if (global.isTeacher) {
+        //   console.log('put additional logic here')
+        // }
       } else {
         console.log('no user')
         router.replace('/(auth)/home')
@@ -25,10 +25,10 @@ export default function IndexPage () {
     supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         router.replace('/(tabs)/home/')
-        console.log(global.isTeacher)
-        if (global.isTeacher) {
-          console.log('put additional logic here')
-        }
+        // console.log(global.isTeacher)
+        // if (global.isTeacher) {
+        //   console.log('put additional logic here')
+        // }
       } else {
         console.log('no user')
         router.replace('/(auth)/home')
