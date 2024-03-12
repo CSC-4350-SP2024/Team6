@@ -33,10 +33,10 @@ export default function AuthPage () {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.verticallySpaced, styles.mt20]}>
       <Stack.Screen options={{ headerShown: true, title: 'Supabase Expo Router App' }} />
       <View>
-        <Text style={[styles.text, styles.topText, { fontSize: 24 }, { color: '#30529c' }]}>Sign In</Text>
+        <Text style={[styles.text, styles.topText, { fontSize: 40 }, { color: '#1044A9' }]}>Sign In</Text>
         <Text style={styles.text}>Already registered? Log in here.</Text>
       </View>
 
@@ -47,7 +47,7 @@ export default function AuthPage () {
           label="Email"
           onChangeText={(text) => setEmail(text)}
           value={email}
-          placeholder="email@address.com"
+          placeholder="pantherid@student.gsu.edu"
           autoCapitalize={'none'}
         />
       </View>
@@ -67,7 +67,7 @@ export default function AuthPage () {
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         {<TouchableOpacity
-            style={[styles.buttonContainer, styles.buttonText, { width: 375 }]}
+            style={[styles.buttonContainer, styles.buttonText, { width: 200 }]}
             disabled={loading}
             onPress={signInWithEmail}>
             <Text style={styles.buttonText}>Log In</Text>
@@ -81,25 +81,6 @@ export default function AuthPage () {
         /> */
         }
 
-      </View>
-
-      <Text style={styles.text}>{'\n'}Don't have an account?</Text>
-
-      <View style={styles.verticallySpaced}>
-        { <TouchableOpacity
-            style={[styles.buttonContainer, styles.buttonText, { width: 300 }]}
-            disabled={loading}
-            onPress={signUpWithEmail}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-
-        /* <Button
-          disabled={loading}
-          title='SignUp'
-          onPress={() => signUpWithEmail()}
-          buttonStyle={[styles.buttonContainer, styles.buttonText]}
-        /> */
-        }
       </View>
     </View>
   )
