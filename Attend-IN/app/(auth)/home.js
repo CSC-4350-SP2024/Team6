@@ -16,7 +16,7 @@ export default function Page () {
     <View style={styles.imageContainer}>
       <ImageBackground source={require('../../assets/GSU Campus.jpg')} style={styles.imageBackground}>
         <View style={styles.container}>
-          <Text style={styles.title}>Attend-In</Text>
+          <Text style={styles.title}>ATTEND-IN</Text>
           <Image source={require('../../assets/Panther Head Logo.png')} style={styles.logo}/>
           <View style={[styles.verticallySpaced, { marginTop: 60 }]}>
             <Link href="/login" asChild>
