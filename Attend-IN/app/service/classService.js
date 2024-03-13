@@ -2,7 +2,7 @@
 import { supabase } from '../lib/supabase';
 import '../global'
 
-// Replace 'YOUR_SUPABASE_URL' and 'YOUR_SUPABASE_KEY' with your Supabase project URL and key
+// All Dates in YYYY-MM-DD format except where specified. month is 1-indexed meaning jan == 01, feb ==02 and so on
 
 async function getUserClasses (userId) {
   try {
@@ -162,6 +162,7 @@ function isDayOfTimestamp (timestamp, day) {
 }
 
 function semesterAttendanceSummary (sectioncrn) {
+  // How To use the function, call with(semesterAttendanceSummary(43350));
   return supabase.rpc('attendanceoverallsummary', { sectioncrn })
     .then((response) => {
       console.log(response.data);
@@ -174,6 +175,8 @@ function semesterAttendanceSummary (sectioncrn) {
 }
 
 function dayAttendanceSummary (classdate, sectioncrn) {
+  // How To use the function, call with(dayAttendanceSummary('2024-03-02', 43350));
+
   // check if date is valid i.e. classdate <= todaysDate & classdate >= firstDate of class
   return supabase.rpc('attendancedaysummary', { classdate, sectioncrn })
     .then((response) => {
@@ -186,6 +189,7 @@ function dayAttendanceSummary (classdate, sectioncrn) {
 }
 
 function dateIntervalAttendanceSummary (enddate, sectioncrn, startdate) {
+  //  How To use the function, call with dateIntervalAttendanceSummary(2024-03-13', 43350, '2024-03-02'));
   // check if dates are valid i.e. startdate <= todaysDate and startdate >= firstClassDate and enddate <= todaysDate and enddate >= firstClassDate
   return supabase.rpc('attendanceintervalsummary', { enddate, sectioncrn, startdate })
     .then((response) => {
