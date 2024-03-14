@@ -1,6 +1,5 @@
 /* eslint-disable semi */
 import { supabase } from '../lib/supabase';
-import '../global'
 
 // All Dates in YYYY-MM-DD format except where specified. month is 1-indexed meaning jan == 01, feb ==02 and so on
 
@@ -13,9 +12,6 @@ async function getUserClasses (userId) {
       console.error(error);
       return { error: 'Failed to retrieve user classes' }
     }
-    data.forEach(element => {
-      if (element.isteacher) global.isTeacher = true;
-    });
     return data;
   } catch (error) {
     console.error('Error fetching user classes:', error.message);
