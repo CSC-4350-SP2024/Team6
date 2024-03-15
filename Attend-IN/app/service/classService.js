@@ -1,8 +1,7 @@
 /* eslint-disable semi */
 import { supabase } from '../lib/supabase';
-import '../global'
 
-// Replace 'YOUR_SUPABASE_URL' and 'YOUR_SUPABASE_KEY' with your Supabase project URL and key
+// All Dates in YYYY-MM-DD format except where specified. month is 1-indexed meaning jan == 01, feb ==02 and so on
 
 async function getUserClasses (userId) {
   try {
@@ -13,9 +12,6 @@ async function getUserClasses (userId) {
       console.error(error);
       return { error: 'Failed to retrieve user classes' }
     }
-    data.forEach(element => {
-      if (element.isteacher) global.isTeacher = true;
-    });
     return data;
   } catch (error) {
     console.error('Error fetching user classes:', error.message);
@@ -24,16 +20,14 @@ async function getUserClasses (userId) {
 }
 
 async function getUserData (setUserId) {
-  try {
-    const { data, error } = await supabase.auth.getUser(); // Fetch user data
-    if (error) {
-      throw error
-    } else {
-      setUserId(data.user.id); // Set the user ID in the state
-    }
-  } catch (error) {
-    console.error('Error fetching user data:', error.message);
-  }
+  await supabase.auth.getUser()
+    .then((response) => {
+      if (response.error) throw response.error;
+      setUserId(response.data.user.id)
+    })
+    .catch((error) => {
+      console.error('Error fetching user data:', error.message);
+    })
 }
 
 // call this function to sign a user in the dataabse
@@ -159,6 +153,81 @@ function isDayOfTimestamp (timestamp, day) {
 
   // Compare the day name with the given day name
   return dayName === day;
+}
+
+function semesterAttendanceSummary (sectioncrn) {
+  // How To use the function, call with =>  |  await semesterAttendanceSummary(43350);  |
+  return supabase.rpc('attendanceoverallsummary', { sectioncrn })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return { data: null, error: 'Error fetching data' };
+    })
+}
+
+async function dayAttendanceSummary (classdate, sectioncrn) {
+  // How To use the function, call with => |  await dayAttendanceSummary('2024-03-05', 43350)  |
+
+  // check if date is valid i.e. classdate <= todaysDate & classdate >= firstDate of class
+  return supabase.rpc('getclassinfo', { sectioncrn })
+    .then((response) => {
+      if (response.error) return [];
+      const eariestStartDate = response.data[0].startClassTimes[0];
+
+      const givenDate = new Date(classdate);
+
+      // Check if the given date is less than today's date
+      if (givenDate >= new Date().setHours(0, 0, 0, 0) || givenDate < new Date(eariestStartDate).setHours(0, 0, 0, 0)) return [];
+
+      // if class date is valid, then query the db for attendance summary
+      return supabase.rpc('attendancedaysummary', { classdate, sectioncrn })
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+          return [];
+        })
+    })
+    .catch((error) => {
+      console.error(error);
+      return [];
+    })
+}
+
+function dateIntervalAttendanceSummary (enddate, sectioncrn, startdate) {
+  //  How To use the function, call with =>  |  await dateIntervalAttendanceSummary('2024-03-13', 43350, '2024-03-02');   |
+
+  // check if dates are valid i.e. startdate <= todaysDate and startdate >= firstClassDate and enddate <= todaysDate and enddate >= firstClassDate
+  return supabase.rpc('getclassinfo', { sectioncrn })
+    .then((response) => {
+      if (response.error) return [];
+      const eariestStartDate = response.data[0].startClassTimes[0];
+
+      const startDate = new Date(startdate);
+      const endDate = new Date(enddate)
+      const todaysDate = new Date().setHours(0, 0, 0, 0);
+      const earliestClassDate = new Date(eariestStartDate).setHours(0, 0, 0, 0);
+
+      // Check if the given date is less than today's date
+      if (startDate >= todaysDate || startDate < earliestClassDate || endDate >= todaysDate || endDate <= earliestClassDate) return [];
+
+      // if class date is valid, then query the db for attendance summary
+      return supabase.rpc('attendanceintervalsummary', { enddate, sectioncrn, startdate })
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+          return { data: null, error: 'Error fetching data' };
+        })
+    })
+    .catch((error) => {
+      console.error(error);
+      return [];
+    })
 }
 
 export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula };
