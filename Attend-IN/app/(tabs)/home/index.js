@@ -23,7 +23,7 @@ function UserClasses() {
   const endDate = moment().endOf('week').toDate();
   const formattedStartDate = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const formattedEndDate = endDate.toLocaleDateString('en-US', { day: 'numeric' });
-  const customHeader = 'Week of ' + formattedStartDate + ' - ' + formattedEndDate;
+  const customHeader = currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year:'numeric'});
 
   useEffect(() => {
     getUserData(setUserId);
@@ -71,32 +71,39 @@ function UserClasses() {
 
   return (
     <View style={styles.container}>
-      <View style={{ backgroundColor: '#1044a9' }}>
-        <Text style={[{ color: 'white' }, { paddingTop: 20 }, { fontFamily: 'serif' }, { fontSize: 17 }, { backgroundColor: '#1044a9' }]}>   Welcome, [Full Name] </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1044a9', paddingHorizontal: 10 }}>
+        <Text style={[{ color: 'white', paddingTop: 20, fontFamily: 'serif', fontSize: 20 }]}>Welcome, [Full Name]</Text>
+        {}
+        <Image
+          source={{ uri: '../../assets/student_icon.png' }} 
+          style={{ width: 38, height: 35, tintColor: 'white' }} 
+        />
       </View>
       <CalendarStrip
       scrollable
       scrollerPaging
       minDate={lastYear}
       maxDate={nextYear}
-      style={{ height: '10%', paddingTop: '4%', paddingBottom: '2%' }} 
+      style={{ height: '15%', paddingTop: '4%', paddingBottom: '2%' }} 
       calendarColor={'#1044a9'}
-      calendarHeaderStyle={{ color: 'white', fontFamily: 'serif', fontSize: '15%', paddingBottom: '2%' }} 
-      dateNumberStyle={{ color: 'white', fontFamily: 'serif', fontSize: '12%' }} 
-      dateNameStyle={{ color: 'white', fontFamily: 'serif', fontSize: '12%' }} 
+      calendarHeaderStyle={{ color: 'white', fontFamily: 'serif', fontSize: 20, paddingBottom: '2%' }} 
+      dateNumberStyle={{ color: 'white', fontFamily: 'serif', fontSize: 10 }} 
+      dateNameStyle={{ color: 'white', fontFamily: 'serif', fontSize: 10 }} 
       highlightDateNumberStyle={{ color: 'white' }}
       selectedDateStyle={{ color: 'white', backgroundColor: 'F4A543' }}
       daySelectionAnimation={{ type: 'background', duration: '30', borderWidth: '0.1%', highlightColor: 'transparent', borderHighlightColor: 'white' }} // Adjust borderWidth with percentage
       highlightDateContainerStyle={{ backgroundColor: '#77A1F2' }}
       iconContainer={{ flex: 0.1 }}
-      calendarAnimation={{ type: 'paralell', duration: '500' }}
-      // headerText={customHeader}
+      calendarAnimation={{ type: 'easeOut', duration: '500' }}
+      headerText={customHeader}
+      scrollSpeed={-0.1} 
     />
       <View style={{ backgroundColor: '#1044a9' }}>
-        <Text style={[{ color: '#1044a9' }, { padding: 10 }, { fontFamily: 'serif' }, { fontSize: 15 }, { backgroundColor: '#D1DFFB' }, { textAlign: 'center' }]}>[Upcoming Class]</Text>
+        <Text style={[{ color: '#1044a9' }, { padding: 10 }, { fontFamily: 'serif' }, { fontSize: 25 }, { backgroundColor: '#E0EEF7' }, { textAlign: 'center' }]}>[Upcoming Class]</Text>
       </View>
       <View style={styles.outerClassContainer}>
-        <Text>User Classes</Text>
+        {/* <Text>User Classes</Text> */}
+        {/* class container- images */}
         <View style={styles.classesContainer}>
           {classes.map((classItem, index) => (
             <View key={classItem.crn} style={styles.classItem}>
@@ -114,6 +121,9 @@ function UserClasses() {
       </View>
     </View>
   );
+  
 }
+
+
 
 export default UserClasses;
