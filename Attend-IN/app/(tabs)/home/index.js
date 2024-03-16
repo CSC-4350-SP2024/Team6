@@ -1,13 +1,14 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, Alert, Image } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, ScrollView, Alert, Image } from 'react-native';
 import { getUserData, getUserClasses } from '../../service/classService.js';
 import styles from './classes_styling.js';
 import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
+
 
 function UserClasses() {
   const [classes, setClasses] = useState([]);
@@ -70,7 +71,7 @@ function UserClasses() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1044a9', paddingHorizontal: 10 }}>
         <Text style={[{ color: 'white', paddingTop: 20, fontFamily: 'serif', fontSize: 20 }]}>Welcome, [Full Name]</Text>
         {}
@@ -119,7 +120,7 @@ function UserClasses() {
           ))}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
   
 }
