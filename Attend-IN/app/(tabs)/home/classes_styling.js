@@ -30,13 +30,12 @@ const styles = StyleSheet.create({
     margin: '1%',
     alignItems: 'center',
     backgroundColor: '#E0EEF7'
-    
   },
   image: {
     width: 150,
     height: 150,
-    resizeMode: 'contain',
-  },
+    resizeMode: 'contain'
+  }
 });
 
 export default styles;

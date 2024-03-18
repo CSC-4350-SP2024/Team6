@@ -230,4 +230,15 @@ function dateIntervalAttendanceSummary (enddate, sectioncrn, startdate) {
     })
 }
 
-export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula };
+function getClassesByDay (day, userId) {
+  return supabase.rpc('getclassesbyday', { day: day, user_id: userId })
+    .then((response) => {
+      return { data: response.data, error: null };
+    })
+    .catch((error) => {
+      console.error(error);
+      return { data: null, error: error.toString()};
+    })
+}
+
+export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay };

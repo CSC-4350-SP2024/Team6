@@ -2,19 +2,21 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, ScrollView, Alert, Image } from 'react-native';
-import { getUserData, getUserClasses } from '../../service/classService.js';
+import { getUserData, getUserClasses, getClassesByDay } from '../../service/classService.js';
 import styles from './classes_styling.js';
 import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
-
+import { fetchUsernameById } from '../../service/userService.js';
 
 function UserClasses() {
   const [classes, setClasses] = useState([]);
   const [userId, setUserId] = useState(null);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [classesForToday, setClassesForToday] = useState([]);
+  const [userName, setUserName] = useState(null);
 
   // For Calendar
   const currentDate = new Date();
@@ -41,6 +43,7 @@ function UserClasses() {
         }
       }
       fetchUserClasses();
+      fetchUsername(userId);
     }
   }, [userId]);
 
@@ -70,10 +73,49 @@ function UserClasses() {
     })();
   }, []);
 
+  const handleDateSelect = async (date) => {
+    if (date._d) {
+      const selectedDate = new Date(date);
+
+      // Use toLocaleString to format the date, specifying the options to get the full day of the week
+      const options = { weekday: 'long' };
+      const fullDayOfWeek = selectedDate.toLocaleString('en-US', options);
+
+      await getClassesByDay(fullDayOfWeek, userId)
+        .then((response) => {
+          setClassesForToday(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          setErrorMsg(error.toString());
+        })
+    }
+    // Here you can handle the selected date, e.g., by setting it in your component's state
+  };
+
+  const toAmPm = (date1) => {
+    const date = new Date();
+    const timesArray = date1.split(':');
+    date.setHours(parseInt(timesArray[0]));
+    date.setMinutes(parseInt(timesArray[1]));
+    const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+    return date.toLocaleString('en-US', options);
+  }
+
+  const fetchUsername = async (id) => {
+    await fetchUsernameById(id)
+      .then((response) => {
+        setUserName(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+        setErrorMsg(error)
+      })
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1044a9', paddingHorizontal: 10 }}>
-        <Text style={[{ color: 'white', paddingTop: 20, fontFamily: 'serif', fontSize: 20 }]}>Welcome, [Full Name]</Text>
+      <Text style={[{ color: 'white' }, { paddingTop: 20 }, { fontFamily: 'serif' }, { fontSize: 17 }, { backgroundColor: '#1044a9' }]}>   Welcome, {userName || ''} </Text>
         {}
         <Image
           source={{ uri: '../../assets/student_icon.png' }} 
@@ -97,10 +139,11 @@ function UserClasses() {
       iconContainer={{ flex: 0.1 }}
       calendarAnimation={{ type: 'easeOut', duration: '500' }}
       headerText={customHeader}
-      scrollSpeed={-0.1} 
+      scrollSpeed={-0.1}
+      onDateSelected={handleDateSelect}
     />
       <View style={{ backgroundColor: '#1044a9' }}>
-        <Text style={[{ color: '#1044a9' }, { padding: 10 }, { fontFamily: 'serif' }, { fontSize: 25 }, { backgroundColor: '#E0EEF7' }, { textAlign: 'center' }]}>[Upcoming Class]</Text>
+      { classesForToday.map((element, index) => <Text key={index} style={[{ color: '#1044a9' }, { padding: 10 }, { fontFamily: 'serif' }, { fontSize: 15 }, { backgroundColor: '#D1DFFB' }, { textAlign: 'center' }]}> {element.classname}: {element.sectioncrn} {toAmPm(element.starttime[0])} - {toAmPm(element.endtime[0])} </Text>) }
       </View>
       <View style={styles.outerClassContainer}>
         {/* <Text>User Classes</Text> */}
@@ -115,16 +158,12 @@ function UserClasses() {
               resizeMode="cover"
             />
               <Text>{classItem.crn}</Text>
-
             </View>
           ))}
         </View>
       </View>
     </ScrollView>
   );
-  
 }
-
-
 
 export default UserClasses;
