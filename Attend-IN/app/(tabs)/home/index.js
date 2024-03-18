@@ -2,14 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, ScrollView, Alert, Image } from 'react-native';
-import { getUserData, getUserClasses } from '../../service/classService.js';
+import { getUserData, getUserClasses, getClassesByDay } from '../../service/classService.js';
 import styles from './classes_styling.js';
 import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
-import { supabase } from '../../lib/supabase.js';
-
+import { fetchUsernameById } from '../../service/userService.js';
 
 function UserClasses() {
   const [classes, setClasses] = useState([]);
@@ -82,7 +81,7 @@ function UserClasses() {
       const options = { weekday: 'long' };
       const fullDayOfWeek = selectedDate.toLocaleString('en-US', options);
 
-      await supabase.rpc('getclassesbyday', { day: fullDayOfWeek, user_id: userId })
+      await getClassesByDay(fullDayOfWeek, userId)
         .then((response) => {
           setClassesForToday(response.data);
         })
@@ -104,9 +103,9 @@ function UserClasses() {
   }
 
   const fetchUsername = async (id) => {
-    await supabase.rpc('getusernamebyid', { profile_id: id })
+    await fetchUsernameById(id)
       .then((response) => {
-        setUserName(response.data[0]?.full_name || response.data[0]?.username)
+        setUserName(response.data)
       })
       .catch((error) => {
         console.error(error)
