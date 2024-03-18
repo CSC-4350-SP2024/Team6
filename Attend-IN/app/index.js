@@ -12,7 +12,7 @@ export default function IndexPage () {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session) {
         if (await isUserATeacher(session?.user?.id)) {
-          router.replace('/(tabs)/home/') // user is a teacher
+          router.replace('/(tabs)/teacher/') // user is a teacher
         } else {
           router.replace('/(tabs)/home/') // user is not a teacher
         }
