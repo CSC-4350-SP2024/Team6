@@ -12,7 +12,7 @@ export default function TabsLayout () {
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       setUser(user)
-      if (await isUserATeacher(user.id) === true) {
+      if (await isUserATeacher(user?.id) === true) {
         setIsTeacher(true)
       }
       setLoading(false) // Set loading to false after fetching user data
