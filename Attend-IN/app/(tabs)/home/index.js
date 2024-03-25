@@ -124,7 +124,7 @@ function UserClasses() {
     const day = currentDate.getDate().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     const isWithinTime = await isWithinTenMinutesBeforeStartTimeOrEndTime(classItem.crn); 
-    const WithinDistance = isWithinDistance(classItem.long, classItem.lat, classItem.long, classItem.lat)
+    const WithinDistance = isWithinDistance(location.longitude, location.latitude, classItem.long, classItem.lat)
     const isRepeat = await isAttendanceAlreadySigned(classItem.crn, userId, formattedDate)
     
     if (!isWithinTime) {
