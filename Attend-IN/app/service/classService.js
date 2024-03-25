@@ -31,9 +31,9 @@ async function getUserData (setUserId) {
 }
 
 // call this function to sign a user in the dataabse
-async function signClassAttendance (userId, crn) {
+async function signClassAttendance (userId, crn, formattedDate) {
   try {
-    const { data, error } = await supabase.rpc('signattendance', { userid: userId, crn1: crn })
+    const { data, error } = await supabase.rpc('signattendance', { userid: userId, crn1: crn})
     if (error) {
       return { error: 'Failed to sign attendance' }
     } else {
@@ -45,13 +45,14 @@ async function signClassAttendance (userId, crn) {
   }
 }
 
+
 // formula to get meters between two geographical coordinates.
 function haversineDistanceFormula (userLong, userLat, classLong, classLat) {
   const R = 6371e3; // radius of the earth in meters
-  const lat1 = Math.toRadians(userLat);
-  const lon1 = Math.toRadians(userLong);
-  const lat2 = Math.toRadians(classLat);
-  const lon2 = Math.toRadians(classLong);
+  const lat1 = userLat * Math.PI / 180; // convert user's latitude to radians
+  const lon1 = userLong * Math.PI / 180; // convert user's longitude to radians
+  const lat2 = classLat * Math.PI / 180; // convert class's latitude to radians
+  const lon2 = classLong * Math.PI / 180; // convert class's longitude to radians
   const diffLat = lat2 - lat1;
   const diffLon = lon2 - lon1;
 
@@ -62,6 +63,13 @@ function haversineDistanceFormula (userLong, userLat, classLong, classLat) {
   const distance = R * (2 * Math.atan2(Math.sqrt(firstPart), Math.sqrt(1 - firstPart)));
 
   return distance;
+}
+
+function isWithinDistance(userLong, userLat, classLong, classLat) {
+  if (haversineDistanceFormula(userLong, userLat, classLong, classLat) <= 200) {
+    return true
+  }
+  return false
 }
 
 async function isWithinTenMinutesBeforeStartTimeOrEndTime (sectioncrn) {
@@ -78,6 +86,7 @@ async function isWithinTenMinutesBeforeStartTimeOrEndTime (sectioncrn) {
       const startTimes = data.startclasstimes.map((element) => element.trim());
       const endTimes = data.endclasstimes.map((element) => element.trim());
 
+
       // start the testing
       if (testDays.includes(currentDay)) {
         for (const targetTime of startTimes) {
@@ -86,6 +95,11 @@ async function isWithinTenMinutesBeforeStartTimeOrEndTime (sectioncrn) {
         for (const targetTime of endTimes) {
           if (isDayOfTimestamp(targetTime, currentDay) && isCurrentTimeTenMinutesLaterOfEndTime(targetTime, currentTime)) return true;
         }
+        for (let i = 0; i < startTimes.length; i++) {
+          if (isCurrentTimeWithinHours(startTimes[i], currentTime, endTimes[i])) {
+            return true; // Return true if the current time is within any of the time ranges
+          }
+        }   
       }
       return false;
     })
@@ -139,6 +153,29 @@ function isCurrentTimeTenMinutesLaterOfEndTime (earlierTime, laterTime) {
   // Check if the difference is within 10 minutes
   return diffInMinutes >= 0 && diffInMinutes <= 10;
 }
+
+function isCurrentTimeWithinHours(earlierTime, currentTime, laterTime) {
+  earlierTime = new Date(earlierTime);
+  laterTime = new Date(laterTime)
+  currentTime = new Date(currentTime)
+  // Extract the hours and minutes from the given time and current time
+  const earlyHours = earlierTime.getHours();
+  const earlyMinutes = earlierTime.getMinutes();
+
+  const currentHours = currentTime.getHours();
+  const currentMinutes = currentTime.getMinutes();
+
+  const laterHours = laterTime.getHours();
+  const laterMinutes = laterTime.getMinutes();
+
+  // Calculate the absolute difference in minutes
+  const diffInMinutes = (currentHours - earlyHours) * 60 + (currentMinutes - earlyMinutes);
+
+  // Check if the difference is within the range of hours
+  return diffInMinutes >= 0 && diffInMinutes <= (laterHours - earlyHours) * 60 + (laterMinutes - earlyMinutes);
+
+}
+
 
 function isDayOfTimestamp (timestamp, day) {
   // Parse the timestamp string to a Date object
@@ -241,4 +278,4 @@ function getClassesByDay (day, userId) {
     })
 }
 
-export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay };
+export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned };
