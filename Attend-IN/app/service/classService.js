@@ -45,7 +45,6 @@ async function signClassAttendance (userId, crn, formattedDate) {
   }
 }
 
-
 // formula to get meters between two geographical coordinates.
 function haversineDistanceFormula (userLong, userLat, classLong, classLat) {
   const R = 6371e3; // radius of the earth in meters
@@ -175,8 +174,6 @@ function isCurrentTimeWithinHours(earlierTime, currentTime, laterTime) {
   return diffInMinutes >= 0 && diffInMinutes <= (laterHours - earlyHours) * 60 + (laterMinutes - earlyMinutes);
 
 }
-
-
 function isDayOfTimestamp (timestamp, day) {
   // Parse the timestamp string to a Date object
   const date = new Date(timestamp);
@@ -278,4 +275,4 @@ function getClassesByDay (day, userId) {
     })
 }
 
-export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned };
+export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned};
