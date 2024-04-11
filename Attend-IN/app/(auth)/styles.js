@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     padding: 12
   },
   imageContainer: {
-    flex: 1,
+    flex: 1
   },
   imageBackground: {
     width: '100%',
@@ -82,6 +82,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: -100
   }
-});
+})
 
-export default styles;
+export default styles
