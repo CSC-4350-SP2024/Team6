@@ -30,8 +30,8 @@ export default function SettingsPage () {
                 <Link href={'/settings/ACCOUNT'}>
                     <Text>Go to Account Settings</Text>
                 </Link>
-                <Link href={'/settings/NETWORK'}>
-                    <Text>Go to Network Settings</Text>
+                <Link href={'/settings/resetPassword'}>
+                    <Text>Update Password</Text>
                 </Link>
                 <Button title="logout" onPress={() => doLogout()}></Button>
             </View>

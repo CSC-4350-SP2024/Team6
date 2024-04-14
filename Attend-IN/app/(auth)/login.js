@@ -21,16 +21,16 @@ export default function AuthPage () {
     setLoading(false)
   }
 
-  async function signUpWithEmail () {
-    setLoading(true)
-    const { error } = await supabase.auth.signUp({
-      email,
-      password
-    })
+  // async function signUpWithEmail () {
+  //   setLoading(true)
+  //   const { error } = await supabase.auth.signUp({
+  //     email,
+  //     password
+  //   })
 
-    if (error) Alert.alert('Sign Up Error', error.message)
-    setLoading(false)
-  }
+  //   if (error) Alert.alert('Sign Up Error', error.message)
+  //   setLoading(false)
+  // }
 
   return (
     <View style={[styles.container, styles.verticallySpaced, styles.mt20]}>
@@ -66,21 +66,23 @@ export default function AuthPage () {
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        {<TouchableOpacity
+        {<><>
+          <TouchableOpacity
             style={[styles.buttonContainer, styles.buttonText, { width: 200 }]}
             disabled={loading}
             onPress={signInWithEmail}>
             <Text style={styles.buttonText}>Log In</Text>
           </TouchableOpacity>
 
-        /* <Button
-          disabled={loading}
-          title='Sign In'
-          onPress={() => signInWithEmail()}
-          buttonStyle={styles.buttonContainer}
-        /> */
-        }
+        </>
+        {/* <Button
+            disabled={loading}
+            title='Sign up'
+            onPress={() => signUpWithEmail()}
+            buttonStyle={styles.buttonContainer} /> */}
 
+            </>
+        }
       </View>
     </View>
   )
