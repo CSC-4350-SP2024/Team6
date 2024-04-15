@@ -8,6 +8,8 @@ const ReportScreen = ({ navigations }) => {
   const { option, crn, startDate, endDate } = route.params;
   const [reportData, setReportData] = useState([]);
 
+
+  //call correct function depending on the option user selected on prev screen
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,6 +35,8 @@ const ReportScreen = ({ navigations }) => {
     fetchData();
   }, [option, crn, startDate, endDate]);
 
+
+//format date to fit attendance generation functuons
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -41,6 +45,7 @@ const ReportScreen = ({ navigations }) => {
     return `${year}-${month}-${day}`;
   };
 
+  //report output processing 
   const renderReport = () => {
     if (option === 'day') {
       return reportData.map((entry) => {
@@ -62,6 +67,7 @@ const ReportScreen = ({ navigations }) => {
         }
       });
 
+      //iterate over keys to generate percentage of presence for each user
       return Object.keys(userMap).map((name) => {
         const { total, presentCount } = userMap[name];
         const percentage = total > 0 ? (presentCount / total) * 100 : 0;
@@ -70,6 +76,7 @@ const ReportScreen = ({ navigations }) => {
     }
   };
 
+  //display name and percentage in table
   const renderReportItem = ({ item }) => {
     return (
       <View style={styles.row}>
@@ -79,6 +86,7 @@ const ReportScreen = ({ navigations }) => {
     );
   };
 
+  //displays header for the attendance table
   const renderReportHeader = () => {
     return (
       <View style={styles.row}>
