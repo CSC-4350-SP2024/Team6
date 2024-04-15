@@ -275,4 +275,4 @@ function getClassesByDay (day, userId) {
     })
 }
 
-export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned};
+export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned, dateIntervalAttendanceSummary, semesterAttendanceSummary, dayAttendanceSummary};

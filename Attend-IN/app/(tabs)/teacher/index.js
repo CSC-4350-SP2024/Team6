@@ -82,7 +82,7 @@ function TeacherClasses() {
   }
 
   const handleClick = (classItem) => {
-    navigation.navigate('timeDetailScreen');
+    navigation.navigate('timeDetailScreen', { crn: classItem.crn }); // Pass crn from classItem to TimeDetailScreen
   };
 
   return (
