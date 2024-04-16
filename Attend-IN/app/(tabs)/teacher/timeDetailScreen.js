@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import styles from './teachers_styling.js';
 
 const TimeDetailScreen = ({ navigation }) => {
   const [option, setOption] = useState(null);
@@ -25,20 +26,22 @@ const TimeDetailScreen = ({ navigation }) => {
 
   const onViewReport = () => {
     if (option === 'day' && !startDate) {
-      return; // Handle validation or show UI feedback if needed
+      Alert.alert('Missing Date', 'Please select a date for the day attendance report.');
+      return;
     }
 
     if (option === 'dateInterval' && (!startDate || !endDate || endDate <= startDate)) {
-      return; // Handle validation or show UI feedback if needed
+      Alert.alert('Invalid Date Range', 'Please select a valid date range for the interval attendance report.');
+      return;
     }
 
     navigations.navigate('reportScreen', { option, crn, startDate, endDate, classname });
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.promptText}>Please select the type of report to generate for {classname}:</Text>
+    <View style={styles.timecontainer}>
+      <View style={styles.timeheader}>
+        <Text style={styles.timepromptText}>Please select the type of report to generate for {classname}:</Text>
       </View>
     
 
@@ -63,10 +66,10 @@ const TimeDetailScreen = ({ navigation }) => {
         <View style={styles.datePickerContainer}>
           <Text style={styles.datePickerLabel}> Date:</Text>
           <DateTimePicker
-            value={endDate}  // Use endDate to set the value of DateTimePicker
+            value={endDate}  // use endDate to set the value of DateTimePicker
             mode="date"
             display="default"
-                onChange={(event, selectedDate) => setEndDate(selectedDate)}  // Update endDate on change
+                onChange={(event, selectedDate) => setEndDate(selectedDate)}  // update endDate when changed
             />
         </View>
       </>
@@ -114,64 +117,5 @@ const TimeDetailScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start', 
-    paddingTop: 0, 
-  },
-  header: {
-    backgroundColor: '#1044a9',
-    width: '100%',
-    height: '20%',
-    paddingVertical: 25,
-    alignItems: 'center',
-    marginBottom: '10%',
-    borderBottomWidth: 15,
-    borderColor: '#D1DFFB'
-  },
-  promptText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: 'white',
-    
-  },
-  button: {
-    backgroundColor: '#1044a9', // Darker shade when selected
-    padding: 15,
-    marginBottom: 20,
-    borderRadius: 8,
-    width: '90%',
-    alignItems: 'center',
-  },
-  selectedButton: {
-    backgroundColor: '#D1DFFB',
-    borderColor: '#E3242B', // Red border
-    borderWidth: 2, // Border width
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  datePickerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  datePickerLabel: {
-    marginRight: 10,
-    fontSize: 16,
-  },
-  viewReportButton: {
-    backgroundColor: '#E3242B', // Different color for View Report button
-    marginTop: 60, 
-    width: '70%',
-  },
-});
 
 export default TimeDetailScreen;
