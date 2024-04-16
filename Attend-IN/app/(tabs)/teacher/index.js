@@ -82,7 +82,7 @@ function TeacherClasses() {
   }
 
   const handleClick = (classItem) => {
-    navigation.navigate('timeDetailScreen', { crn: classItem.crn }); // Pass crn from classItem to TimeDetailScreen
+    navigation.navigate('timeDetailScreen', { crn: classItem.crn, classname:classItem.classname }); // Pass crn from classItem to TimeDetailScreen
   };
 
   return (
@@ -125,7 +125,7 @@ function TeacherClasses() {
             const startFormatted = startTime[1].slice(11, 20);
             const endTime = classItem.endclasstimes;
             const endFormatted = endTime[1].slice(11,20)
-            const time = `${startFormatted} - ${endFormatted}`;
+            const time = `${toAmPm(startFormatted)} - ${toAmPm(endFormatted)}`;
            
             return (
               <TouchableOpacity

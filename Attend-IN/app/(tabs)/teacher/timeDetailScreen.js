@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useNavigation, useRoute} from '@react-navigation/native'; // Import useRoute hook
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const TimeDetailScreen = ({ navigation }) => {
   const [option, setOption] = useState(null);
-  const route = useRoute(); //access route object
-  const { crn } = route.params; // extract crn from route.params
+  const route = useRoute();
+  const  crn  = route.params.crn;
+  const classname = route.params.classname
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const navigations = useNavigation();
 
+
   const selectOption = (selectedOption) => {
     setOption(selectedOption);
-    // reset dates selection when other options selected
     setStartDate(new Date());
     setEndDate(new Date());
   };
@@ -22,120 +23,155 @@ const TimeDetailScreen = ({ navigation }) => {
     return option === selectedOption;
   };
 
-  const onSelectStartDate = (selectedDate) => {
-    if (selectedDate) {
-      setStartDate(selectedDate);
-    }
-  };
-
-  const onSelectEndDate = (selectedDate) => {
-    if (selectedDate) {
-      // check if end date > than start date
-      if (selectedDate > startDate) {
-        setEndDate(selectedDate);
-      } else {
-        Alert.alert('Invalid End Date', 'End date must be after the start date.');
-      }
-    }
-  };
-
   const onViewReport = () => {
     if (option === 'day' && !startDate) {
-      Alert.alert('Select Date', 'Please select a date for Day Attendance.');
-      return;
+      return; // Handle validation or show UI feedback if needed
     }
 
     if (option === 'dateInterval' && (!startDate || !endDate || endDate <= startDate)) {
-      Alert.alert(
-        'Select Dates',
-        'Please select valid start and end dates for Date Interval Attendance.'
-      );
-      return;
+      return; // Handle validation or show UI feedback if needed
     }
 
-    // navigate to report screen with selected data
-    navigations.navigate('reportScreen', { option, crn, startDate, endDate });
+    navigations.navigate('reportScreen', { option, crn, startDate, endDate, classname });
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.promptText}>Please select the type of report to generate for {classname}:</Text>
+      </View>
+    
+
       <TouchableOpacity
-        style={{
-          marginBottom: 10,
-          backgroundColor: isOptionSelected('semester') ? 'blue' : '#DDDDDD',
-          padding: 10,
-        }}
+        style={[styles.button, isOptionSelected('semester') && styles.selectedButton]}
         onPress={() => selectOption('semester')}
         disabled={isOptionSelected('semester')}
       >
-        <Text style={{ color: 'white', textAlign: 'center' }}>Semester Attendance</Text>
+        <Text style={styles.buttonText}>Semester Attendance</Text>
       </TouchableOpacity>
+
       <TouchableOpacity
-        style={{
-          marginBottom: 10,
-          backgroundColor: isOptionSelected('day') ? 'blue' : '#DDDDDD',
-          padding: 10,
-        }}
+        style={[styles.button, isOptionSelected('day') && styles.selectedButton]}
         onPress={() => selectOption('day')}
         disabled={isOptionSelected('day')}
       >
-        <Text style={{ color: 'white', textAlign: 'center' }}>Day Attendance</Text>
+        <Text style={styles.buttonText}>Day Attendance</Text>
       </TouchableOpacity>
+
       {option === 'day' && (
-        <DateTimePicker
-          value={startDate}
-          mode="date"
-          display="default"
-          onChange={(event, selectedDate) => onSelectStartDate(selectedDate)}
-        />
-      )}
+        <>
+        <View style={styles.datePickerContainer}>
+          <Text style={styles.datePickerLabel}> Date:</Text>
+          <DateTimePicker
+            value={endDate}  // Use endDate to set the value of DateTimePicker
+            mode="date"
+            display="default"
+                onChange={(event, selectedDate) => setEndDate(selectedDate)}  // Update endDate on change
+            />
+        </View>
+      </>
+    )}
+
       <TouchableOpacity
-        style={{
-          marginBottom: 10,
-          backgroundColor: isOptionSelected('dateInterval') ? 'blue' : '#DDDDDD',
-          padding: 10,
-        }}
+        style={[styles.button, isOptionSelected('dateInterval') && styles.selectedButton]}
         onPress={() => selectOption('dateInterval')}
         disabled={isOptionSelected('dateInterval')}
       >
-        <Text style={{ color: 'white', textAlign: 'center' }}>Date Interval Attendance</Text>
+        <Text style={styles.buttonText}>Date Interval Attendance</Text>
       </TouchableOpacity>
+
       {option === 'dateInterval' && (
         <>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Start Date:</Text>
+          <View style={styles.datePickerContainer}>
+            <Text style={styles.datePickerLabel}>Start Date:</Text>
             <DateTimePicker
               value={startDate}
               mode="date"
               display="default"
-              onChange={(event, selectedDate) => onSelectStartDate(selectedDate)}
+              onChange={(event, selectedDate) => setStartDate(selectedDate)}
             />
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <Text style={{ marginRight: 10 }}>End Date:</Text>
+          <View style={styles.datePickerContainer}>
+            <Text style={styles.datePickerLabel}>End Date:</Text>
             <DateTimePicker
               value={endDate}
               mode="date"
               display="default"
-              onChange={(event, selectedDate) => onSelectEndDate(selectedDate)}
+              onChange={(event, selectedDate) => setEndDate(selectedDate)}
             />
           </View>
         </>
       )}
+
       {option && (
         <TouchableOpacity
-          style={{
-            marginTop: 20,
-            backgroundColor: 'blue', // Change color for "View Report" button
-            padding: 10,
-          }}
+          style={[styles.button, styles.viewReportButton]}
           onPress={onViewReport}
         >
-          <Text style={{ color: 'white', textAlign: 'center' }}>View Report</Text>
+          <Text style={styles.buttonText}>View Report</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start', 
+    paddingTop: 0, 
+  },
+  header: {
+    backgroundColor: '#1044a9',
+    width: '100%',
+    height: '20%',
+    paddingVertical: 25,
+    alignItems: 'center',
+    marginBottom: '10%',
+    borderBottomWidth: 15,
+    borderColor: '#D1DFFB'
+  },
+  promptText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'white',
+    
+  },
+  button: {
+    backgroundColor: '#1044a9', // Darker shade when selected
+    padding: 15,
+    marginBottom: 20,
+    borderRadius: 8,
+    width: '90%',
+    alignItems: 'center',
+  },
+  selectedButton: {
+    backgroundColor: '#D1DFFB',
+    borderColor: '#E3242B', // Red border
+    borderWidth: 2, // Border width
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  datePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  datePickerLabel: {
+    marginRight: 10,
+    fontSize: 16,
+  },
+  viewReportButton: {
+    backgroundColor: '#E3242B', // Different color for View Report button
+    marginTop: 60, 
+    width: '70%',
+  },
+});
 
 export default TimeDetailScreen;
