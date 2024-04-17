@@ -135,8 +135,8 @@ const ReportScreen = () => {
               legendFontSize: 15,
             },
           ]}
-          width={350}
-          height={200}
+          width={300}
+          height={150}
           accessor="percentage"
           backgroundColor="transparent"
           paddingLeft="15"
