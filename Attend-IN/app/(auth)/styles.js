@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: 'serif',
     color: '#fff',
     fontWeight: 'bold',
     alignSelf: 'center',

@@ -212,10 +212,10 @@ async function dayAttendanceSummary (classdate, sectioncrn) {
 
       const givenDate = new Date(classdate);
 
-      // Check if the given date is less than today's date
+      // check if the given date is less than today's date
       if (givenDate >= new Date().setHours(0, 0, 0, 0) || givenDate < new Date(eariestStartDate).setHours(0, 0, 0, 0)) return [];
 
-      // if class date is valid, then query the db for attendance summary
+      
       return supabase.rpc('attendancedaysummary', { classdate, sectioncrn })
         .then((response) => {
           return response.data;
