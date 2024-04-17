@@ -24,7 +24,11 @@ export default function IndexPage () {
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session) {
-        router.replace('/(tabs)/home/')
+        if (await isUserATeacher(session?.user?.id)) {
+          router.replace('/(tabs)/teacher/') // user is a teacher
+        } else {
+          router.replace('/(tabs)/home/') // user is not a teacher
+        }
       } else {
         console.log('no user')
         router.replace('/(auth)/home')
