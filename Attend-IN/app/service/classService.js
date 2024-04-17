@@ -246,7 +246,7 @@ function dateIntervalAttendanceSummary (enddate, sectioncrn, startdate) {
       const earliestClassDate = new Date(eariestStartDate).setHours(0, 0, 0, 0);
 
       // Check if the given date is less than today's date
-      if (startDate >= todaysDate || startDate < earliestClassDate || endDate >= todaysDate || endDate <= earliestClassDate) return [];
+      if (startDate >= todaysDate || startDate < earliestClassDate || endDate <= earliestClassDate) return [];
 
       // if class date is valid, then query the db for attendance summary
       return supabase.rpc('attendanceintervalsummary', { enddate, sectioncrn, startdate })
@@ -275,4 +275,4 @@ function getClassesByDay (day, userId) {
     })
 }
 
-export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned};
+export { getUserClasses, getUserData, signClassAttendance, haversineDistanceFormula, getClassesByDay, isWithinTenMinutesBeforeStartTimeOrEndTime, isWithinDistance, isAttendanceAlreadySigned, dateIntervalAttendanceSummary, semesterAttendanceSummary, dayAttendanceSummary};
