@@ -4,6 +4,9 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { PieChart } from 'react-native-chart-kit';
 import { dayAttendanceSummary, semesterAttendanceSummary, dateIntervalAttendanceSummary } from '../../service/classService.js';
 import styles from './teachers_styling.js';
+import * as XLSX from 'xlsx';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 
 const ReportScreen = () => {
   const navigation = useNavigation();
@@ -98,6 +101,25 @@ const ReportScreen = () => {
   };
 
   const { percentagePresent, percentageAbsent } = calculatePercentages();
+  // new stuff
+  
+    const handleDownloadReport = () => {
+      const wb = XLSX.utils.book_new();
+      const reportItems = renderReport();
+      const dataArray = reportItems.map(item => [item.name, item.status]);
+      const ws = XLSX.utils.aoa_to_sheet([['Name', 'Attendance Percentage'], ...dataArray]);
+      XLSX.utils.book_append_sheet(wb, ws, 'Attendance Report');
+      const base64 = XLSX.write(wb, {type: "base64"});
+      const filename = FileSystem.documentDirectory +`${classname} Semester Attendance Report.xlsx`;
+      FileSystem.writeAsStringAsync(filename, base64, {
+      encoding: FileSystem.EncodingType.Base64
+    }).then(() => {
+      Sharing.shareAsync(filename);
+      
+      });
+    
+  };
+  
 
   return (
     <View style={{ flex: 1 }}>
@@ -159,7 +181,12 @@ const ReportScreen = () => {
       />
 
       <View style={{ alignItems: 'center', marginTop: 20 }}>
-        
+      {option === 'semester' && (
+          <TouchableOpacity style={styles.downloadButton} onPress={handleDownloadReport}>
+            <Text style={styles.downloadButtonText}>Download Report</Text>
+          </TouchableOpacity>
+        )}
+
       </View>
       <TouchableOpacity style={styles.closeButton} onPress={handleCloseReport}>
         <Text style={styles.closeButtonText}>Close Report</Text>
