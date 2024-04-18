@@ -108,6 +108,10 @@ const ReportScreen = () => {
       const reportItems = renderReport();
       const dataArray = reportItems.map(item => [item.name, item.status]);
       const ws = XLSX.utils.aoa_to_sheet([['Name', 'Attendance Percentage'], ...dataArray]);
+          // Setting zoom property
+      ws['!zoom'] = 150; // Zoom level in percentage (e.g., 150%)
+          // Setting column widths
+      ws['!cols'] = [{ width: 50 }, { width: 55 }]; // Set width for each column (in characters)
       XLSX.utils.book_append_sheet(wb, ws, 'Attendance Report');
       const base64 = XLSX.write(wb, {type: "base64"});
       const filename = FileSystem.documentDirectory +`${classname} Semester Attendance Report.xlsx`;
